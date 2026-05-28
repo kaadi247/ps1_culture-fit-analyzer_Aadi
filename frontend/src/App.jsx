@@ -588,8 +588,11 @@ function ReportScreen({ companyName, report, onStartQuiz }) {
             {companyName}
           </h1>
         </div>
-        <Btn id="take-quiz-btn" onClick={onStartQuiz}>
-          Take the Quiz →
+        <Btn id="take-quiz-btn" onClick={onStartQuiz} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '10px 20px' }}>
+          <div>Take the Quiz →</div>
+          <div style={{ fontSize: '9px', fontWeight: 400, opacity: 0.7, marginTop: '4px', letterSpacing: '0.04em' }}>
+            Diagnostic test to test your compatibility
+          </div>
         </Btn>
       </div>
 
