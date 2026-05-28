@@ -155,6 +155,20 @@ function LandingScreen({ onSubmit, error, onClearError }) {
   const [text, setText]     = useState('')
   const [wordErr, setWordErr] = useState('')
 
+  let displayError = error
+  if (error) {
+    try {
+      const parsed = JSON.parse(error)
+      if (parsed.detail) displayError = parsed.detail
+    } catch (e) {
+      // not JSON
+    }
+    
+    if (typeof displayError === 'string' && displayError.includes('high demand')) {
+      displayError = 'Something went wrong — Gemini is experiencing high demand. Please wait a moment and try again.'
+    }
+  }
+
   const wordCount = text.trim() ? text.trim().split(/\s+/).length : 0
 
   function handleSubmit() {
@@ -210,6 +224,38 @@ function LandingScreen({ onSubmit, error, onClearError }) {
 
       {/* Form */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+
+        {displayError && (
+          <div style={{
+            background: '#E53E3E',
+            color: '#FFFFFF',
+            padding: '14px 18px',
+            borderRadius: '6px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            fontFamily: T.sans,
+            fontSize: '14px',
+            fontWeight: 500,
+            boxShadow: '0 4px 12px rgba(229, 62, 62, 0.2)'
+          }}>
+            <span style={{ lineHeight: 1.5 }}>{displayError}</span>
+            <button
+              onClick={onClearError}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#FFFFFF',
+                fontSize: '22px',
+                cursor: 'pointer',
+                lineHeight: 1,
+                padding: '0 0 0 16px',
+              }}
+            >
+              ×
+            </button>
+          </div>
+        )}
 
         {/* Company name */}
         <div>
@@ -290,9 +336,6 @@ function LandingScreen({ onSubmit, error, onClearError }) {
         >
           Analyze Culture →
         </Btn>
-
-        {/* API error */}
-        <ErrorBanner message={error} onRetry={onClearError} />
       </div>
 
       {/* Footer */}
