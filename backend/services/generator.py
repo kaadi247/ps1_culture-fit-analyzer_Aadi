@@ -25,6 +25,7 @@ import asyncio
 import json
 import os
 import re
+import time
 from typing import Any, Dict, List
 
 from google import genai
@@ -101,13 +102,29 @@ def clean_gemini_json(text: str) -> str:
 
 
 def _generate_sync(prompt: str) -> str:
-    """Synchronous Gemini generation call using the new google.genai SDK."""
+    """Synchronous Gemini generation call with 3-attempt exponential backoff retry."""
     client = _get_client()
-    response = client.models.generate_content(
-        model=_GENERATION_MODEL,
-        contents=prompt,
-    )
-    return response.text
+    last_exc: Exception = Exception("Unknown error")
+
+    for attempt in range(3):
+        try:
+            response = client.models.generate_content(
+                model=_GENERATION_MODEL,
+                contents=prompt,
+            )
+            return response.text
+        except Exception as e:
+            last_exc = e
+            if attempt == 2:
+                raise Exception(
+                    "Gemini is experiencing high demand. Please try again in a moment."
+                ) from last_exc
+            wait = 5 * (attempt + 1)
+            print(f"Gemini retry attempt {attempt + 1}, waiting {wait}s... ({e})")
+            time.sleep(wait)
+
+    # Unreachable, but satisfies type checkers
+    raise last_exc
 
 
 async def generate_culture_report(
