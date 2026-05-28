@@ -79,7 +79,7 @@ Generate a structured JSON response with these exact keys:
 - research_insights: Write 2 paragraphs of research insights. For every claim you make, you MUST embed the actual URL inline in the text using this exact format: (source: https://actual-url-here.com). Do NOT write "Source 1" or "Source 2" — always use the real URL from the context provided. If a search result has no URL, skip it entirely. Only cite sources that are genuinely relevant to this company's culture. Do NOT reference "chunk 1", "chunk 2" etc in your output. The chunks are your private context only. Never mention them.
 - quiz_questions: array of exactly 8 questions, each with:
     - question: string
-    - options: array of 4 strings (A/B/C/D)
+    - options: array of 4 plain strings with NO letter prefix (do not start options with "A.", "B.", "C.", or "D.")
     - dimension: one of [innovation, collaboration, mission, pace, people]
     - weights: array of 4 integers 1-10 representing fit score for each option
 

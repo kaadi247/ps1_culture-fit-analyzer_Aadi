@@ -815,7 +815,7 @@ function QuizScreen({ report, reportId, onDone, onError }) {
               }}>
                 {OPTION_LABELS[i]}.
               </span>
-              <span style={{ lineHeight: 1.6 }}>{opt}</span>
+              <span style={{ lineHeight: 1.6 }}>{opt.replace(/^[A-D]\.\s*/i, '')}</span>
             </button>
           )
         })}
