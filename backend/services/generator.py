@@ -73,9 +73,9 @@ Web search results about this company's culture:
 {search_section}
 
 Generate a structured JSON response with these exact keys:
-- culture_report: 3-paragraph analysis of company culture grounded ONLY in retrieved chunks
-- values_to_thrive: bullet list of 5 specific values a person needs to fit in, each explained in 2 sentences
-- research_insights: 2-paragraph section citing the web search results above with their URLs
+- culture_report: 3-paragraph analysis of company culture grounded ONLY in retrieved chunks. Do NOT reference "chunk 1", "chunk 2" etc in your output. The chunks are your private context only. Never mention them.
+- values_to_thrive: bullet list of 5 specific values a person needs to fit in, each explained in 2 sentences. Do NOT reference "chunk 1", "chunk 2" etc in your output. The chunks are your private context only. Never mention them.
+- research_insights: Write 2 paragraphs of research insights. For every claim you make, you MUST embed the actual URL inline in the text using this exact format: (source: https://actual-url-here.com). Do NOT write "Source 1" or "Source 2" — always use the real URL from the context provided. If a search result has no URL, skip it entirely. Only cite sources that are genuinely relevant to this company's culture. Do NOT reference "chunk 1", "chunk 2" etc in your output. The chunks are your private context only. Never mention them.
 - quiz_questions: array of exactly 8 questions, each with:
     - question: string
     - options: array of 4 strings (A/B/C/D)

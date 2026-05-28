@@ -446,15 +446,33 @@ function LoadingScreen({ companyName, apiPromise, onDone, onError }) {
 /* ══════════════════════════════════════════════════════════════════════
    SCREEN 3 — REPORT
 ══════════════════════════════════════════════════════════════════════ */
-function linkify(text) {
+const SOURCE_REGEX = /\(source: (https?:\/\/[^\s)]+)\)/g
+
+function linkifyResearch(text) {
   if (!text) return null
-  const urlRegex = /(https?:\/\/[^\s]+)/g
-  const parts = text.split(urlRegex)
-  return parts.map((part, i) =>
-    urlRegex.test(part)
-      ? <a key={i} href={part} target="_blank" rel="noopener noreferrer" style={{ color: T.accent }}>{part}</a>
-      : part
-  )
+  // Split by the (source: url) pattern, preserving the captured URL group
+  const parts = text.split(SOURCE_REGEX)
+  return parts.map((part, i) => {
+    // Even indices are plain text; odd indices are the captured URL from the group
+    if (i % 2 === 1) {
+      return (
+        <a
+          key={i}
+          href={part}
+          target="_blank"
+          rel="noreferrer"
+          style={{
+            color: '#C8FF00',
+            textDecoration: 'underline',
+            wordBreak: 'break-all',
+          }}
+        >
+          {part}
+        </a>
+      )
+    }
+    return <span key={i}>{part}</span>
+  })
 }
 
 function Tab({ label, active, onClick }) {
@@ -645,7 +663,7 @@ function ReportScreen({ companyName, report, onStartQuiz }) {
               lineHeight: 1.9,
               color: T.text,
             }}>
-              {linkify(para)}
+              {linkifyResearch(para)}
             </p>
           ))}
         </div>
